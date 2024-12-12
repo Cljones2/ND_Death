@@ -1,6 +1,6 @@
 # ND_Death 
 
-![ND_Death](https://github.com/lucaswydx/ND_Death/assets/59517854/75ddd531-b97a-4620-b893-a2e9c6e0041b)
+![ND_PanicButton (1)](https://github.com/lucaswydx/ND_Death/assets/112611821/3b32047b-0efa-4fdb-9884-f65675facff7)
 
 **ND_Death** is a script for ND-Framework's FiveM game server that enhances the player experience by providing features related to player death, EMS notifications, and respawn mechanics. It allows server administrators to configure various aspects of the player's death and revival process.
 
@@ -50,7 +50,7 @@ respawnLocations = {
     { x = 1839.21, y = 3673.5, z = 34.26, h = 198.93 }, -- Another example respawn location
     -- Add more respawn locations here
 },
-```
+
 ## Dependencies
 
 - [ND_Core](https://github.com/ND-Framework/ND-Core): ND_Core provides essential functionalities for seamless integration.
@@ -76,5 +76,5 @@ For support, bug reports, or feature requests, please create an issue on this re
 Enjoy the enhanced player experience with ND_Death!
 
 ### Authors
-- [Lucas](https://github.com/lucaswydx)
+- [Lucas Wyatt](https://github.com/lucaswydx)
 - [TheStoicBear](https://github.com/TheStoicBear)

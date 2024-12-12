@@ -1,5 +1,8 @@
 NDCore = exports["ND_Core"]:GetCoreObject()
 
+local activeCalls = {}
+local callIdCounter = 0
+
 -- Admin revive command
 RegisterCommand("adrev", function(source, args, rawCommand)
     local player = source -- Store the source (player) ID
@@ -59,20 +62,64 @@ RegisterCommand("cpr", function(source, args, rawCommand)
     end
 end)
 
--- This event is triggered from the client to revive a player at their downed position
-RegisterServerEvent("ND_Death:AdminRevivePlayerAtPosition")
-AddEventHandler("ND_Death:AdminRevivePlayerAtPosition", function(targetPlayerId)
-    local targetPlayer = tonumber(targetPlayerId)
+-- Add chat suggestion for /cpr command
+AddEventHandler('onResourceStart', function(resourceName)
+    if GetCurrentResourceName() == resourceName then
+        -- Add suggestion for all players when the resource starts
+        TriggerClientEvent('chat:addSuggestion', -1, '/cpr', 'Perform CPR on a player', {
+            { name="playerID", help="The ID of the player to perform CPR on" }
+        })
+    end
+end)
 
-    if targetPlayer then
-        local targetPlayerPed = GetPlayerPed(targetPlayer)
 
-        if IsEntityDead(targetPlayerPed) then -- Check if the player is dead
-            RespawnPlayerAtDownedPosition() -- Call the new function to revive at downed position
-            TriggerClientEvent("chatMessage", -1, "^2Server: ^7Player " .. targetPlayer .. " revived by an admin.")
-        else
-            TriggerClientEvent("chatMessage", -1, "^1Error: ^7Player is not dead.")
+
+
+RegisterNetEvent('ND_Death:NotifyEMS')
+AddEventHandler('ND_Death:NotifyEMS', function(playerCoords)
+    local src = source
+    callIdCounter = callIdCounter + 1
+    local callId = callIdCounter
+    activeCalls[callId] = {
+        caller = src,
+        coords = playerCoords,
+        accepted = false
+    }
+
+    -- Notify EMS players
+    local players = GetPlayers()
+    for _, playerId in ipairs(players) do
+        local player = tonumber(playerId)
+        local character = NDCore.Functions.GetPlayer(player)
+        if character and character.job and character.job == 'NHS' then
+            -- Send notification to EMS player
+            TriggerClientEvent('ND_Death:EMSNotification', player, callId, playerCoords)
         end
     end
 end)
 
+
+RegisterNetEvent('ND_Death:AcceptCall')
+AddEventHandler('ND_Death:AcceptCall', function(callId)
+    local src = source
+    local call = activeCalls[callId]
+    if call and not call.accepted then
+        call.accepted = true
+        call.ems = src
+
+        -- Notify other EMS players that the call has been accepted
+        local players = GetPlayers()
+        for _, playerId in ipairs(players) do
+            local player = tonumber(playerId)
+            if player ~= src then
+                local character = NDCore.Functions.GetPlayer(player)
+                if character and character.job and character.job == 'NHS' then
+                    TriggerClientEvent('ND_Death:CallAccepted', player, callId, src)
+                end
+            end
+        end
+    else
+        -- The call is already accepted or doesn't exist
+        TriggerClientEvent('ND_Death:CallAlreadyAccepted', src, callId)
+    end
+end)
