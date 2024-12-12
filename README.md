@@ -1,3 +1,113 @@
+
+# Raxon's Server - ND_Death
+
+ Discord : https://discord.gg/VHDbgpnBbR
+
+Welcome to **Raxon's Server**! This repository contains the **ND_Death** script for **FiveM**. The script manages player death events, EMS notifications, and admin revive commands to enhance roleplay immersion on your server.
+
+## Features
+
+- **Death Handling**: Detects when a player dies and manages respawn mechanics.
+- **EMS Notifications**: Notifies EMS with location details when a player is down.
+- **CPR Command**: Allows authorized players (NHS/EMS) to perform CPR on downed players.
+- **Admin Revive**: Provides a command for admins to revive players.
+- **Custom Notifications**: Integration with ModernHUD for stylish notifications.
+- **Bleed-Out Timer**: Automatic respawn after a set duration if no help arrives.
+- **Debug Logging**: Console messages for easy debugging and monitoring.
+
+## Commands
+
+- **Admin Revive Command**:
+  ```
+  /adrev [playerID]
+  ```
+  - Revives the specified player. Requires admin permissions.
+
+- **Call NHS Command**:
+  ```
+  /callnhs
+  ```
+  - Notifies EMS of a downed player at your current location.
+
+- **CPR Command**:
+  ```
+  /cpr [playerID]
+  ```
+  - Performs CPR on a specified player. Only available to EMS/NHS roles.
+
+## Configuration
+
+### Default Settings
+
+- **Respawn Time**: Set the bleed-out timer in `Config.respawnTime`.
+- **EMS Departments**: Define EMS roles in `Config.MedDept`.
+
+Example configuration:
+
+```lua
+Config.respawnTime = 300 -- Time in seconds before automatic respawn
+Config.MedDept = {"NHS", "EMS"} -- Jobs allowed to use the CPR command
+```
+
+## Installation
+
+1. **Clone or Download** this repository to your `resources` folder:
+   ```bash
+   git clone https://github.com/yourusername/ND_Death.git
+   ```
+
+2. **Add to `server.cfg`**:
+   ```cfg
+   ensure ND_Death
+   ```
+
+3. **Restart the Server**:
+   ```bash
+   restart ND_Death
+   ```
+
+## Dependencies
+
+- **ND_Core**: Required for core server functions.
+- **oxmysql**: For database interactions.
+- **ModernHUD** (optional): For enhanced notifications.
+
+## How It Works
+
+1. **Death Detection**: The script detects when a player’s health reaches zero.
+2. **EMS Notification**: Sends an EMS call with the player’s location.
+3. **CPR and Revive**:
+   - EMS can perform CPR on players.
+   - Admins can use `/adrev` to revive any player.
+4. **Respawn System**: Players respawn after the bleed-out timer expires or when revived.
+
+## Contribution
+
+We welcome contributions! If you have ideas, enhancements, or bug fixes, feel free to create a pull request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+## Contact
+
+- **Discord**: [Join Our Community](https://discord.gg/raxons-server)
+- **Website**: [raxons-server.com](https://www.raxons-server.com)
+
+---
+
+Stay safe and enjoy **Raxon's Server**! ⚙️ 🚑
+
+![Banner](https://via.placeholder.com/728x90.png?text=Raxon's+Server)
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+ORIGINAL
+
 # ND_Death 
 
 ![ND_PanicButton (1)](https://github.com/lucaswydx/ND_Death/assets/112611821/3b32047b-0efa-4fdb-9884-f65675facff7)
